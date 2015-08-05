@@ -28,7 +28,7 @@ void setup() {
   for (int i = 0; i < 500; i = i + spacer) {
     for (int j = 0; j < 500; j = j + spacer) {
       stroke(170); // set the stroke colour to a light grey
-      fill(0, 150); // set the fill colour to black with transparency
+      fill(200, 150); // set the fill colour to black with transparency
       rect(i, j, random(6), random(6));
     }
   }
@@ -43,19 +43,23 @@ void draw() {
 
   if (mousePressed) {
     // draw a rectangle with a small random variation in size
-    stroke(170); // set the stroke colour to a light grey
-    fill(0, 150); // set the fill colour to black with transparency
+    int r = int(random(255));
+    int g = int(random(255));
+    int b = int(random(255));
+    color c = color(r,g,b);
+    stroke(c); // set the stroke colour to a light grey
+    fill(c); // set the fill to random color
     rect(mouseX, mouseY, random(6), random(6));
   }
 
 
   // save your drawing when you press keyboard 's'
   if (keyPressed == true && key=='s') {
-    saveFrame("yourName.jpg");
+    saveFrame("joseph.jpg");
   }
 
   // erase your drawing when you press keyboard 'r'
   if (keyPressed == true && key == 'r') {
-    background(255);
+    setup();
   }
 }
