@@ -22,6 +22,16 @@ void setup() {
 
   // set the rectangle mode to draw from the centre with a specified radius
   rectMode(RADIUS);
+  
+  // draw rectangles to cover environment
+  int spacer = 6;
+  for (int i = 0; i < 500; i = i + spacer) {
+    for (int j = 0; j < 500; j = j + spacer) {
+      stroke(170); // set the stroke colour to a light grey
+      fill(0, 150); // set the fill colour to black with transparency
+      rect(i, j, random(6), random(6));
+    }
+  }
 }
 
 
@@ -49,4 +59,3 @@ void draw() {
     background(255);
   }
 }
-
