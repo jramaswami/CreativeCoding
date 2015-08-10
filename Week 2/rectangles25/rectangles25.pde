@@ -10,12 +10,18 @@ void setup() {
   size(530, 530);
   rectMode(CORNER);
   drawRectangles();
-  //frameRate(0.5);
-  noLoop();
+  frameRate(0.5);
+  //noLoop();
 }
 
 void draw() {
   drawRectangles();
+
+  // save your drawing when you press keyboard 's'
+  if (keyPressed == true && key=='s') {
+    saveFrame("rectangles25.jpg");
+    println("Saved.");
+  }  
 }
 
 void drawRectangles() { //<>//
@@ -40,7 +46,7 @@ void drawRectangles() { //<>//
       }
 
       // random x offset
-      float max_offset = 10;
+      float max_offset = 7;
       float min_offset = 3;
       float x_offset = 0;
       p = random(0,1);
@@ -66,5 +72,5 @@ void drawRectangles() { //<>//
       fill(rectColor);
       rect(x_pos, y_pos, rectSize, rectSize);      
     }
-  }
+  }  
 }
