@@ -38,11 +38,7 @@ void drawRectangles() { //<>//
       } else {
         rectColor = color(#B91515);
       }
-      
-      // TODO: figure out how to add
-      //       darker overlap when offset
-      //       occurs.
- 
+
       // random x offset
       float max_offset = 10;
       float min_offset = 3;
@@ -67,27 +63,8 @@ void drawRectangles() { //<>//
       }
       y_pos = y_pos + y_offset;
       
-      fill(rectColor, 200);
-      stroke(rectColor);
-      rect(x_pos, y_pos, rectSize, rectSize);
-      
-      // shadowing on overlap
-      float shadowCoefficient = 0.8;
-      color shadowColor = color(
-            red(rectColor)*shadowCoefficient, 
-            green(rectColor)*shadowCoefficient, 
-            blue(rectColor)*shadowCoefficient);
-      if (x_offset > gap) {
-        fill(shadowColor, 200);
-        stroke(shadowColor);
-        rect(x_pos + rectSize, y_pos, x_offset - gap, rectSize);
-      }
-      
-      if (x_offset < (-1 * gap)) {
-        fill(shadowColor, 200);
-        stroke(shadowColor);
-        rect(x_pos, y_pos, x_offset - abs(gap), rectSize);
-      }
+      fill(rectColor);
+      rect(x_pos, y_pos, rectSize, rectSize);      
     }
   }
 }
