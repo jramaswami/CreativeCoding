@@ -20,8 +20,8 @@ void draw() {
     for (int j = 0; j < numCells; j++) {
       cellNumber++;
       
-      float xPos = margin + (cellSize / 2) + (cellSize + gutter) * i;
-      float yPos = margin + (cellSize / 2) + (cellSize + gutter) * j;
+      float xPos = margin + (cellSize / 2) + (cellSize + gutter) * j;
+      float yPos = margin + (cellSize / 2) + (cellSize + gutter) * i;
       
       float angle = cellNumber * TWO_PI * millis() / 60000.0;
       drawCell(xPos, yPos, cellSize, angle, cellNumber);
