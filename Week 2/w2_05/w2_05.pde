@@ -16,18 +16,27 @@ int frame_rate_value;
 
 void setup() {
   size(500, 500);
-
+  
+  // frame rate - to be adjusted
+  // interactively when user
+  // presses left and right
+  // arrow keys
   frame_rate_value = 6;
   frameRate(frame_rate_value);
   rectMode(CENTER);
+  
+  // white background
   background(255);
 }
 
 
 void draw() {
 
+  // clear all by redrawing
+  // white background
   background(255);
 
+  // determine cell size 
   int num = 20;
   int margin = 0;
   float gutter = 0; //distance between each cell
@@ -58,10 +67,15 @@ void movingCircle(float x, float y, float size, int circleNum) {
 
   noStroke();
   fill(0);
+  // small square
   rect(tempX, tempY, size/5, size/5);
+  // rectangle that is actually
+  // a line
   rect(tempX, tempY, 1, size*5);
   stroke(0);
   noFill();
+  // line between the square
+  // and the line thin rectangle
   stroke(0);
   line(x, y, tempX, tempY);
 }
@@ -88,4 +102,3 @@ void keyReleased() {
   frameRate(frame_rate_value);
   println("Current frame Rate is: " + frame_rate_value);
 }
-
