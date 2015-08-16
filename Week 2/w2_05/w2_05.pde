@@ -20,8 +20,12 @@ void setup() {
   // frame rate - to be adjusted
   // interactively when user
   // presses left and right
-  // arrow keys
-  frame_rate_value = 6;
+  // arrow keys; the default
+  // rate is the one that makes
+  // it appear that the shapes
+  // are floating on a wavy
+  // ocean
+  frame_rate_value = 9;
   frameRate(frame_rate_value);
   rectMode(CENTER);
   
@@ -56,6 +60,15 @@ void draw() {
 } //end of draw 
 
 
+color randomColor() {
+  // choose random color
+  float r = random(0,255);
+  float g = random(0,255);
+  float b = random(0,255);
+  color c = color(r,g,b);
+  return c;
+}
+
 void movingCircle(float x, float y, float size, int circleNum) {
 
   float finalAngle;
@@ -64,19 +77,19 @@ void movingCircle(float x, float y, float size, int circleNum) {
   //the rotating angle for each tempX and tempY postion is affected by frameRate and angle;  
   float tempX = x + (size / 2) * sin(PI / frame_rate_value * finalAngle);
   float tempY = y + (size / 2) * cos(PI / frame_rate_value * finalAngle);
-
+  
   noStroke();
-  fill(0);
+  fill(randomColor());
   // small square
   rect(tempX, tempY, size/5, size/5);
   // rectangle that is actually
   // a line
   rect(tempX, tempY, 1, size*5);
-  stroke(0);
+  stroke(randomColor());
   noFill();
   // line between the square
   // and the line thin rectangle
-  stroke(0);
+  stroke(randomColor());
   line(x, y, tempX, tempY);
 }
 
