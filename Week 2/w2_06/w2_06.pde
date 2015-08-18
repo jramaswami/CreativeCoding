@@ -14,10 +14,7 @@
 int frame_rate_value;
 
 void setup() {
-
-  // make the display window the full size of the screen
-  size(displayWidth, displayHeight);
-
+  fullScreen();
   frame_rate_value = 12;
   rectMode(CENTER);
   background(0);
@@ -81,4 +78,3 @@ void keyReleased() {
   // print the current value on the screen
   println("Current frame Rate is: " + frame_rate_value);
 }
-
