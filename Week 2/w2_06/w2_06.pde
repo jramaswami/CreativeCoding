@@ -78,3 +78,7 @@ void keyReleased() {
   // print the current value on the screen
   println("Current frame Rate is: " + frame_rate_value);
 }
+
+void mousePressed(MouseEvent event) {
+  frame_rate_value = int(map(event.getX(), 0, width, 2, 120));
+}
