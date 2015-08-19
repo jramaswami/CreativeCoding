@@ -2,7 +2,7 @@ class Ball {
  
   // I think you meant velocity when
   // you had a variable called easing
-  float velocity = 0.01;
+  float velocity = 1;
   float[] velocityVector = new float[2];
   
   // These will be randomized in
@@ -46,8 +46,11 @@ class Ball {
     float deltaX = this.targetX[this.currentTarget] - this.x;
     float deltaY = this.targetY[this.currentTarget] - this.y;
     
-    this.velocityVector[0] = deltaX * this.velocity;
-    this.velocityVector[1] = deltaY * this.velocity;
+    // scale velocity vector to match ball's velocity
+    float distance = sqrt(sq(deltaX) + sq(deltaY));
+    
+    this.velocityVector[0] = deltaX * this.velocity / distance;
+    this.velocityVector[1] = deltaY * this.velocity / distance;
   }
   
   // So I replaced your run
@@ -56,10 +59,11 @@ class Ball {
   // how I learned to do motion.
   void update() {
     
+    // TODO: what if velocity is so high that the ball passes through the target?
     // see if we "hit" the target point
     float deltaX = this.targetX[this.currentTarget] - this.x;
     float deltaY = this.targetY[this.currentTarget] - this.y;
-    if (abs(deltaX) < 0.1 && abs(deltaY) < 0.1) { //<>//
+    if (abs(deltaX) < this.radius && abs(deltaY) < this.radius) { //<>//
       // pick new random target
       this.chooseRandomTarget();
       this.update();
@@ -73,12 +77,15 @@ class Ball {
   void draw() {
     // draw ball
     fill(255,0,0);
-    ellipse(this.x, this.y, this.radius, this.radius);
+    ellipse(this.x, this.y, this.radius*2, this.radius*2);
     
     // draw target
     fill(0,0,0);
-    ellipse(this.targetX[this.currentTarget], this.targetY[this.currentTarget], 1, 1);
-    
+    ellipse(this.targetX[this.currentTarget], this.targetY[this.currentTarget], 1, 1); 
+  }
+  
+  void changeVelocity(float deltaV) {
+    this.velocity = this.velocity + deltaV;
   }
 }
 
@@ -139,6 +146,15 @@ void keyReleased() {
     myBalls.add(new Ball(random(width), random(height)));
   } else if (DOWN == keyCode) {
     // remove ball when user presses down arrow
+    // TODO: what if there are no balls?
     myBalls.remove(int(random(myBalls.size())));
+  } else if ('f' == key) {
+    for (int i=0; i< myBalls.size(); i++) {
+      myBalls.get(i).changeVelocity(1);
+    }
+  } else if ('s' == key) {
+    for (int i=0; i< myBalls.size(); i++) {
+      myBalls.get(i).changeVelocity(-1);
+    }
   }
 }
