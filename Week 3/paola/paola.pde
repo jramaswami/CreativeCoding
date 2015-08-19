@@ -18,23 +18,24 @@ class Ball {
   int currentTarget;
   float radius;
   
-  Ball(float x, float y, float[] Tx, float[] Ty) {
+  Ball(float x, float y) {
     // I believe this is more idiomatic
     this.x = x;
     this.y = y;
-    
-    // You already declared these variables.
-    // You do not need to declare the variables again,
-    // so instead of float targetX = float[] Tx you do 
-    // the following:
-    this.targetX = Tx;
-    this.targetY = Ty;
-    
+        
     this.radius = 10.0;
     
-    // I took out setting a targets sequence
-    // because you appear to want it to be
-    // randomized
+    // Moved random target choice here
+    // because we'll be adding balls
+    // on key press UP and I only
+    // want to write this code once.
+    this.targetX = new float[5];
+    this.targetY = new float[5];
+    for (int j = 0; j < 5; j++) {
+      this.targetX[j] = random(width);
+      this.targetY[j] = random(height);      
+    }
+    
     chooseRandomTarget();
   }
 
@@ -86,7 +87,10 @@ class Ball {
 // because it more accurately
 // describes what the variable
 // is.
-Ball[] myBalls; 
+// Changed to array list
+// to allow for dynamic
+// number of balls.
+ArrayList<Ball> myBalls; 
 
 void setup() {
   size(700, 400);
@@ -104,43 +108,37 @@ void setup() {
   // This would allow you to
   // change this and have more
   // (or less) balls. E.g
-  // int numBalls = 3;
+  int numBalls = 3;
   // or
-  int numBalls = 10;
-  myBalls = new Ball[numBalls];
+  // int numBalls = 10;
+  myBalls = new ArrayList<Ball>();
   
-  for (int i=0; i< myBalls.length; i++) {
+  for (int i=0; i< numBalls; i++) {
     initX = random(width);
-    initY = random(height);
-    
-    // I'm not sure what you were trying to do
-    // here so I made random targets
-    float tarX[] = new float[5];
-    float tarY[] = new float[5];
-    for (int j = 0; j < 5; j++) {
-      tarX[j] = random(width);
-      tarY[j] = random(height);      
-    }
-    // you don't need this because
-    // the randomizing takes place 
-    // in the Ball constructor
-    // change= int(random(1, 4));
-  
-    myBalls[i] = new Ball(initX, initY, tarX, tarY);
+    initY = random(height);  
+    myBalls.add(new Ball(initX, initY));
   }
 }
 
 void draw() {
   // clear background
   background(180);
-  for (int i=0; i< myBalls.length; i++) {
-    myBalls[i].update();
-    myBalls[i].draw();
+  for (int i=0; i< myBalls.size(); i++) {
+    myBalls.get(i).update();
+    myBalls.get(i).draw();
   }
 }
 
 void keyReleased() {
-  for (int i=0; i< myBalls.length; i++) {
-    myBalls[i].chooseRandomTarget();
+  if (' ' == key) {
+    for (int i=0; i< myBalls.size(); i++) {
+      myBalls.get(i).chooseRandomTarget();
+    }
+  } else if (UP == keyCode) {
+    // add ball when user presses up arrow
+    myBalls.add(new Ball(random(width), random(height)));
+  } else if (DOWN == keyCode) {
+    // remove ball when user presses down arrow
+    myBalls.remove(int(random(myBalls.size())));
   }
 }
