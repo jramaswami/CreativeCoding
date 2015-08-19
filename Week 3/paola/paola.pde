@@ -58,7 +58,7 @@ class Ball {
     // see if we "hit" the target point
     float deltaX = this.targetX[this.currentTarget] - this.x;
     float deltaY = this.targetY[this.currentTarget] - this.y;
-    if (deltaX < 0.1 && deltaY < 0.1) { //<>//
+    if (abs(deltaX) < 0.1 && abs(deltaY) < 0.1) { //<>//
       // pick new random target
       this.chooseRandomTarget();
       this.update();
