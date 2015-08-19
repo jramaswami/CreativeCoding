@@ -86,7 +86,7 @@ class Ball {
 // because it more accurately
 // describes what the variable
 // is.
-Ball [] myBalls = new Ball[3]; 
+Ball[] myBalls; 
 
 void setup() {
   size(700, 400);
@@ -100,6 +100,15 @@ void setup() {
   // setup because you don't use
   // it anywhere else.
   float initX, initY;
+  
+  // This would allow you to
+  // change this and have more
+  // (or less) balls. E.g
+  // int numBalls = 3;
+  // or
+  int numBalls = 10;
+  myBalls = new Ball[numBalls];
+  
   for (int i=0; i< myBalls.length; i++) {
     initX = random(width);
     initY = random(height);
