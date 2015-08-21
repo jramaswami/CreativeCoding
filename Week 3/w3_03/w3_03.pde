@@ -29,10 +29,11 @@ float blue;
 void setup() {
 
   //Fullscreen: to make fullscreen run this sketch with presentation mode ( sketch menu > Present )
-  size(displayWidth, displayHeight);
+  // size(displayWidth, displayHeight);
+  // fullScreen();
 
   //Not fullscreen: fixed window 
-  // size(500, 500);
+  size(500, 500);
 
 
   // change each value below for different visual
@@ -79,17 +80,29 @@ void draw() {
       x[i] = width/2 + cos(r + phase[i])* width/2;
     }
 
-
     if (i<num-1) {
+
+      // draw circles for visualizing
+      // what is going on
+      /*
+      ellipseMode(CENTER);
+      ellipse(x[i], y[1], 5, 5);
+      ellipse(x[i+1],y[i+1],5,5);
+      */
+      
       float distance = dist(x[i], y[i], x[i+1], y[i+1]);
       if (distance > rowHeight && distance < rowHeight + distanceMargin) {
 
         stroke(0, 20);
         line(x[i], y[i], x[i+1], y[i+1]);
 
-        // stroke(255);
+        //Or draw points to visualize
+        // what is going on
+        /* 
+        stroke(255);
         point(x[i], y[i]);
         point(x[i+1], y[i+1]);
+        */
       }
     }
   }
@@ -105,4 +118,3 @@ void draw() {
     // println("red: "+red+", green: "+green+", blue: "+blue);
   }
 }
-
