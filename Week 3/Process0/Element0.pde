@@ -4,12 +4,16 @@ class Element0 {
   int copyNumber;
   float radius;
   color circleColor;
-
+  boolean intersecting;
+  float transparencyOnCollision;
+  
   Element0(PVector initialPosition, PVector velocity, float radius, int copyNumber) {
     this.position = initialPosition;
     this.velocity = velocity;
     this.copyNumber = copyNumber;
     this.radius = radius;
+    this.intersecting = false;
+    this.transparencyOnCollision = 50;
     
     if (this.isOdd()) {
       this.circleColor = color(255, 0, 0);
@@ -27,9 +31,15 @@ class Element0 {
   }
 
   void draw() {
-    stroke(this.circleColor);
+    
     strokeWeight(2);
-    noFill();
+    if (intersecting) {
+      noStroke();
+      fill(this.circleColor, this.transparencyOnCollision);
+    } else {
+      noStroke();
+      fill(this.circleColor);
+    }
     ellipseMode(CENTER);
     ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
   }

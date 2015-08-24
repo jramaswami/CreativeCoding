@@ -1,24 +1,33 @@
 ElementManager em;
-int elementCount = 5;
-float BALL_RADIUS = 50;
-float MAX_VELOCITY = 3;
 
 void setup() {
   size(600, 600);
   em = new ElementManager();
-  
-  for (int i = 0; i < elementCount; i++) {
-    float x = random(width);
-    float y = random(height);
-    float x_vel = random(MAX_VELOCITY);
-    float y_vel = random(MAX_VELOCITY);
-    em.addElement(new Element0(new PVector(x, y), new PVector(x_vel, y_vel), BALL_RADIUS, i));
+  for (int i = 0; i < 5; i++) {
+    em.addRandomElement();
   }
 }
 
 void draw() {
-  background(180);
+  background(255);
   em.update();
   em.draw();
+}
+
+void keyPressed() {
+  switch (keyCode) {
+  case RIGHT:
+    em.accelerateAll(1.1);
+    break;
+  case LEFT:
+    em.accelerateAll(0.9);
+    break;
+  case UP:
+    em.addRandomElement();
+    break;
+  case DOWN:
+    em.removeRandomElement();
+    break;
+  }
 }
 
