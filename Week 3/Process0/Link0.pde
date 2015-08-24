@@ -49,3 +49,19 @@ class ThinWhiteLinks implements LinkDrawingStrategy {
     line(l.e1.position.x, l.e1.position.y, l.e2.position.x, l.e2.position.y);
   }
 }
+
+class OscillatingColoredLinks implements LinkDrawingStrategy {
+  float speed;
+  OscillatingColoredLinks(float speed) {
+    this.speed = speed;
+  }
+  
+  void draw(Link0 l) {
+      float r = map(sin(frameCount*speed),-1,1,0,255);
+      float g = map(cos(frameCount*speed),-1,1,0,255);
+      float b = map(-sin(frameCount*speed),-1,1,0,255);
+      stroke(r,g,b);
+      strokeWeight(0.25);
+      line(l.e1.position.x, l.e1.position.y, l.e2.position.x, l.e2.position.y);
+  }
+}
