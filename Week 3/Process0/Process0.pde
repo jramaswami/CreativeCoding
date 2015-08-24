@@ -23,21 +23,3 @@ void draw() {
   em.update();
   em.draw();
 }
-
-void keyPressed() {
-  switch (keyCode) {
-  case RIGHT:
-    em.accelerateAll(1.1);
-    break;
-  case LEFT:
-    em.accelerateAll(0.9);
-    break;
-  case UP:
-    em.addRandomElement();
-    break;
-  case DOWN:
-    em.removeRandomElement();
-    break;
-  }
-}
-
