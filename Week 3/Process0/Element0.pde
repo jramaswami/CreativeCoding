@@ -29,19 +29,9 @@ class Element0 {
   PVector getPosition() {
     return this.position;
   }
-
-  void draw() {
     
-    strokeWeight(2);
-    if (intersecting) {
-      noStroke();
-      fill(this.circleColor, this.transparencyOnCollision);
-    } else {
-      noStroke();
-      fill(this.circleColor);
-    }
-    ellipseMode(CENTER);
-    ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
+  void draw(ElementDrawingStrategy eds) {
+    eds.draw(this);
   }
 
   private void reflectX() {
@@ -77,3 +67,13 @@ class Element0 {
   }
 }
 
+interface ElementDrawingStrategy {
+  void draw(Element0 e);
+}
+
+class HiddenElements implements ElementDrawingStrategy {
+ void draw(Element0 e) {
+   // don't draw anything
+  return;
+ } 
+}

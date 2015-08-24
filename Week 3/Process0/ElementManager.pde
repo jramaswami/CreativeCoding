@@ -2,33 +2,54 @@ class ElementManager {
   ArrayList<Element0> elements;
   ArrayList<Link0> links;
 
-  float BALL_RADIUS = 50;
-  float MAX_VELOCITY = 3;
+  float elementRadius = 50;
+  float maxVelocity = 3;
 
+  LinkDrawingStrategy lds;
+  ElementDrawingStrategy eds;
+  
   ElementManager() {
     this.elements = new ArrayList<Element0>();
+    this.lds = new ThinWhiteLinks();
+    this.eds = new HiddenElements();
   }
 
   void addElement(Element0 e) {
     this.elements.add(e);
   }
 
+  void setLinkDrawingStrategy(LinkDrawingStrategy lds) {
+    this.lds = lds;  
+  }
+  
+  void setElementDrawingStrategy(ElementDrawingStrategy eds) {
+    this.eds = eds;  
+  }
+  
+  void setMaxVelocity(float velocity) {
+    this.maxVelocity = velocity;
+  }
+
+  void setElementRadius(float radius) {
+    this.elementRadius = radius;
+  }
+
   void addRandomElement() {
     float x = random(width);
     float y = random(height);
-    float x_vel = random(this.MAX_VELOCITY);
-    float y_vel = random(this.MAX_VELOCITY);
+    float x_vel = random(this.maxVelocity);
+    float y_vel = random(this.maxVelocity);
     int i = this.elements.size() + 1;
-    em.addElement(new Element0(new PVector(x, y), new PVector(x_vel, y_vel), this.BALL_RADIUS, i));
+    em.addElement(new Element0(new PVector(x, y), new PVector(x_vel, y_vel), this.elementRadius, i));
   }
-  
+
   void removeRandomElement() {
     // choose random element
     int i = int(random(this.elements.size()));
-    
+
     // get it
     Element0 e = this.elements.get(i);
-    
+
     // see if it has any links
     ArrayList<Link0> l2r = new ArrayList<Link0>();
     for (Link0 l : this.links) {
@@ -36,16 +57,16 @@ class ElementManager {
         l2r.add(l);
       }
     }
-    
+
     // remove links
-    for (Link0 l: l2r) {
+    for (Link0 l : l2r) {
       this.links.remove(l);
     }
-    
+
     // remove element
     elements.remove(e);
   }
-  
+
   void changeVelocities(PVector delta) {
     for (Element0 e : elements) {
       e.velocity.add(delta);
@@ -75,14 +96,14 @@ class ElementManager {
       }
     }
   }
-  
+
   private void resetCollisions() {
     this.links = new ArrayList<Link0>();
     for (Element0 e : this.elements) {
       e.intersecting = false;
     }
   }
-  
+
   void update() {
 
     this.detectCollisions();
@@ -94,13 +115,12 @@ class ElementManager {
 
   void draw() {
     for (Element0 e : this.elements) {
-      e.draw();
+      e.draw(this.eds);
     }
 
     for (Link0 l : this.links) {
-      l.draw();
+      l.draw(this.lds);
     }
   }
-
 }
 
