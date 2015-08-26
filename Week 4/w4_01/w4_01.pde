@@ -36,13 +36,39 @@ float hueValue = 180;
 float brightValue = 100;
 float complementryHue = 0;
 
-void setup() {
+int numMemoryCells;
+color[] hueMemory;
+color[] complementaryMemory;
+int currentMemoryPointer;
 
-  size(800, 800);
+// saturation
+float satLineLength;
+PVector satCirclePos;
+float satCircleRadius;
+float saturation;
+boolean movingSatCircle;
+
+float gutter;
+
+void setup() {
+  size(750, 750);
   colorMode(HSB, 360, 100, 100); // use HSB colour mode, H=0->360, S=0->100, B=0->100
 
-    colorHandleX = width/2+300;
+  colorHandleX = width/2+300;
   colorHandleY = height/2;
+  
+  numMemoryCells = 5;
+  hueMemory = new color[numMemoryCells];
+  complementaryMemory = new color[numMemoryCells];
+  initMemoryCells();
+  currentMemoryPointer = 0;
+  
+  gutter = 40;
+  satLineLength = 400;
+  satCirclePos = new PVector((width + satLineLength)/2, height-gutter);
+  satCircleRadius = 10;
+  movingSatCircle = false;
+  saturation = 100;
 }
 
 
@@ -51,6 +77,36 @@ void draw() {
   //         H  S  B
   background(0, 0, 100);
 
+  // draw squares for color memory
+  rectMode(CENTER);
+  float memoryCellSize = (width - (gutter * 2))/ numMemoryCells;
+  for (int i = 0; i < numMemoryCells; i++) {
+    noStroke();
+    fill(hueMemory[i]);
+    float x = gutter + memoryCellSize/2 + memoryCellSize * i;
+    float y = gutter + memoryCellSize/2;
+    rect(x, y, memoryCellSize, memoryCellSize);
+    
+    noStroke();
+    fill(complementaryMemory[i]);
+    rect(x, y, memoryCellSize/2, memoryCellSize/2);
+  }
+    
+  // draw ui for saturation
+  float satx = (width - satLineLength) / 2;
+  float saty = height - gutter;
+  stroke(0, 40);
+  line(satx, saty, satx+satLineLength, saty);
+  
+  if (movingSatCircle) {
+    satCirclePos.x = constrain(mouseX, (width-satLineLength)/2, (width+satLineLength)/2);
+    saturation = calculateSatValue();
+  }
+  
+  noStroke();
+  fill(0,0,70);
+  ellipse(satCirclePos.x,satCirclePos.y,satCircleRadius*2,satCircleRadius*2);
+  
   // draw reference line at the 0/360 hue boundary
   stroke(0, 40);
   line(width/2 - innerR, height/2, width/2 - outerR2, height/2);
@@ -62,7 +118,7 @@ void draw() {
     float angle = radians(36*i-90); // 10 x 36 degree steps
 
     //   Hue   Sat  Brightness
-    fill(36*i, 100, 100);  // change the colour as we're building the quads
+    fill(36*i, saturation, 100);  // change the colour as we're building the quads
 
     //outside(top)
     vertex( width/2 + outerR*sin(angle), height/2 + outerR*cos(angle) );
@@ -84,7 +140,7 @@ void draw() {
   ellipse(width/2, height/2, 10, 10);
 
   //   Hue       Sat  Brightness
-  fill(hueValue, 100, brightValue);
+  fill(hueValue, saturation, brightValue);
   ellipse(colorHandleX, colorHandleY, handleSize, handleSize );
 
   //complementry color for colorHandle (comHand)
@@ -130,7 +186,21 @@ void colorHandleUpdate() {
 
   // isLocked will be true if we pressed the mouse down while over the handle
   if (isLocked) {
+    
+    calculateHueValues();
 
+    //Shape for the locked colorHandle 
+    noStroke(); 
+    fill(0, 0, 85);
+    ellipse(colorHandleX, colorHandleY, handleSize+20, handleSize+20);
+  }
+}
+
+float calculateSatValue() {
+  return map(satCirclePos.x, (width-satLineLength)/2, (width+satLineLength)/2, 0, 100);
+}
+
+void calculateHueValues() {
     // calculate angle of handle based on mouse position
     // atan2 value is in the range from pi to -pi
     float angle = atan2(mouseY-height/2, mouseX-width/2  );
@@ -142,15 +212,8 @@ void colorHandleUpdate() {
     hueValue = map (degrees(angle), -180, 180, 360, 0);
 
     // map distance from outer edge of the wheel to brightness
-    brightValue = map(radius, outerR, outerR2, 0, 100);
-
-    //Shape for the locked colorHandle 
-    noStroke(); 
-    fill(0, 0, 85);
-    ellipse(colorHandleX, colorHandleY, handleSize+20, handleSize+20);
-  }
+    brightValue = map(radius, outerR, outerR2, 0, 100);  
 }
-
 
 /*
  * isWithinCircle
@@ -186,6 +249,8 @@ void dotLine(float x1, float y1, float x2, float y2, int dotDetail) {
 void mousePressed() {
   if (isWithinCircle(colorHandleX, colorHandleY, handleSize)) {
     isLocked = true;
+  } else if (isWithinCircle(satCirclePos.x, satCirclePos.y,satCircleRadius)) {
+    movingSatCircle = true;
   }
 }
 
@@ -195,6 +260,28 @@ void mousePressed() {
  *
  */
 void mouseReleased() {
+    
+  if (isLocked) {  
+    //calculateHueValues();
+    hueMemory[currentMemoryPointer] = color(hueValue, saturation, brightValue);
+    complementaryMemory[currentMemoryPointer] = color(calculateCompHue(hueValue), saturation, brightValue);    
+    currentMemoryPointer++;
+    if (currentMemoryPointer >= numMemoryCells) {
+      currentMemoryPointer = 0;
+    }
+  }
+  
   isLocked = false;
+  movingSatCircle = false;
+
 }
 
+/**
+ * Initialize memory squares to gray.
+ */
+ void initMemoryCells() {
+   for (int i = 0; i < numMemoryCells; i++) {
+     hueMemory[i] = color(255);
+     complementaryMemory[i] = color(240);
+   }
+ }
