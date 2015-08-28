@@ -14,7 +14,10 @@ All images in the data directory will be drawn in sequence.
 ## Image Sources
 
 https://en.wikipedia.org/wiki/File:Grahamona_at_Corvallis_circa_1915.jpg
+
 https://en.wikipedia.org/wiki/File:Okanogan_Complex_Fire_-_USFS.jpg
+
 https://en.wikipedia.org/wiki/File:Willowwood.jpg
+
 https://en.wikipedia.org/wiki/File:Bertrand_Russell_leads_anti-nuclear_march_in_London,_Feb_1961.jpg
 
