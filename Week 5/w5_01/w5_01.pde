@@ -41,7 +41,20 @@ void draw() {
   String mousePosition = "(" + str(mouseX) + "," + str(mouseY) + ")";
 
   // STEP 4: display the mousePosition string at the current mouse location
-  text(mousePosition, mouseX, mouseY);
+  float tascent = textAscent();
+  float twidth = textWidth(mousePosition);
+  float textX = mouseX;
+  float textY = mouseY;
+  // make sure text stays on canvas when at the top
+  if (textY < tascent) {
+    textY = textY + tascent;
+  }
+  // make sure test stays on canvas when at right side
+  if (textX > width - twidth) {
+    textX = textX - twidth;
+  }
+
+  text(mousePosition, textX, textY);
 
   // draw the red '+' at the mouse location
   stroke(255, 0, 0);
